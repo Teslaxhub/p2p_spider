@@ -4,6 +4,11 @@ def splitdrive(p):#from os.path
     if p[1:2] == ':':
         return p[0:2], p[2:]
     return '', p
+
+# Split a path in head (everything up to the last '/') and tail (the
+# rest).  After the trailing '/' is stripped, the invariant
+# join(head, tail) == p holds.
+# The resulting head won't end in '/' unless it is the root.
 def split(p):#os.path
     """Split a pathname.
 
