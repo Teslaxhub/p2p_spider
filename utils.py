@@ -1,3 +1,12 @@
+__author__="wanghuafeng"
+#coding:utf-8
+import re
+import os
+import io
+import sys
+import time
+import codecs
+
 def splitdrive(p):#from os.path
     """Split a pathname into drive and path specifiers. Returns a 2-tuple
 "(drive,path)";  either part may be empty"""
@@ -28,3 +37,49 @@ def split(p):#os.path
     head = head2 or head
     return d + head, tail
 
+def unique_list(xs):
+    seen = set()
+    # not seen.add(x) here acts to make the code shorter without using if statements, seen.add(x) always returns None.
+    return [x for x in xs if x not in seen and not seen.add(x)]
+
+def re_show(regexp, string, left="{", right="}"):
+    print(re.compile(regexp, re.M).sub(left + r"\g<0>" + right, string.rstrip()))
+
+def splitport(host):
+    """splitport('host:port') --> 'host', 'port'."""
+    _portprog = re.compile('^(.*):([0-9]+)$')
+    match = _portprog.match(host)
+    if match: return match.group(1, 2)
+    return host, None
+
+# Null bytes; no need to recreate these on each call to guess_json_utf
+def guess_json_utf(data):
+    # JSON always starts with two ASCII characters, so detection is as
+    # easy as counting the nulls and from their location and count
+    # determine the encoding. Also detect a BOM, if present.
+    _null = '\x00'.encode('ascii')  # encoding to ASCII for Python 3
+    _null2 = _null * 2
+    _null3 = _null * 3
+    sample = data[:4]
+    if sample in (codecs.BOM_UTF32_LE, codecs.BOM32_BE):
+        return 'utf-32'     # BOM included
+    if sample[:3] == codecs.BOM_UTF8:
+        return 'utf-8-sig'  # BOM included, MS style (discouraged)
+    if sample[:2] in (codecs.BOM_UTF16_LE, codecs.BOM_UTF16_BE):
+        return 'utf-16'     # BOM included
+    nullcount = sample.count(_null)
+    if nullcount == 0:
+        return 'utf-8'
+    if nullcount == 2:
+        if sample[::2] == _null2:   # 1st and 3rd are null
+            return 'utf-16-be'
+        if sample[1::2] == _null2:  # 2nd and 4th are null
+            return 'utf-16-le'
+            # Did not detect 2 valid UTF-16 ascii-range characters
+    if nullcount == 3:
+        if sample[:3] == _null3:
+            return 'utf-32-be'
+        if sample[1:] == _null3:
+            return 'utf-32-le'
+            # Did not detect a valid UTF-32 ascii-range character
+    return None
