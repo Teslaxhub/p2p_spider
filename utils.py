@@ -83,3 +83,15 @@ def guess_json_utf(data):
             return 'utf-32-le'
             # Did not detect a valid UTF-32 ascii-range character
     return None
+
+def combine_freq_words():
+    '''合并多个文件，按词频进行倒序排列'''
+    import glob
+    file_path = r'C:\Users\wanghuafeng\Desktop\test\*.freq'
+    total_line_list = []
+    file_list = glob.glob(file_path)
+    print 'file_list lenght: ', len(file_list)
+    for filename in file_list:
+        total_line_list.extend(codecs.open(filename).readlines())
+    total_line_list = sorted(total_line_list, key=lambda x: int(x.split('\t')[-1]), reverse=True)
+    codecs.open(os.path.join(r'C:\Users\wanghuafeng\Desktop\test', 'combine_freq.txt'), mode='wb').writelines(total_line_list)
