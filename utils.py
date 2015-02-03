@@ -95,3 +95,11 @@ def combine_freq_words():
         total_line_list.extend(codecs.open(filename).readlines())
     total_line_list = sorted(total_line_list, key=lambda x: int(x.split('\t')[-1]), reverse=True)
     codecs.open(os.path.join(r'C:\Users\wanghuafeng\Desktop\test', 'combine_freq.txt'), mode='wb').writelines(total_line_list)
+
+@staticmethod
+def make_inorder_by_freq(filename):
+    '''使文件按词频倒序排列
+    文件格式: 第一列为词，第二列为词频, \t 分割'''
+    with codecs.open(filename, encoding='utf-8') as f:
+        line_list_inorder = sorted(f.readlines(), key=lambda x:int(x.split('\t')[-1]), reverse=True)
+        codecs.open(filename, mode='wb', encoding='utf-8').writelines(line_list_inorder)
