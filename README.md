@@ -11,5 +11,5 @@
 5、pyExecJs.py		python调用js，通过PyQt4调用webkit，可以动态加载html中的javascript
 6、fabric_exec.py	fabric实现多台server的远程控制
 7、dinner.py		公司订餐系统的升级
-
+8、mis.py		公司mis系统登录
 </pre>
