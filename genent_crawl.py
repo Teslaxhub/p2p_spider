@@ -8,9 +8,9 @@ import gevent.monkey
 
 gevent.monkey.patch_socket()
 
-thread_count = 100  #指定同一时刻并发量
+thread_count = 4000  #指定同一时刻并发量
 
-url = 'http://10.0.2.53:9091/Tasker?Action=0&TemplateID=200001'
+url = 'http://10.0.2.53:9091/Tasker?Action=0&TemplateID=200000'
 
 
 def read(url):
@@ -31,4 +31,6 @@ def concuyRead():
     print "Elapsed Time : %d" %(end-start)
 
 if __name__ == '__main__':
-    concuyRead()
+    for i in range(1, 20):
+        concuyRead()
+        time.sleep(1)
