@@ -7,7 +7,7 @@ import codecs
 from bs4 import BeautifulSoup
 s=requests.Session()
 
-url_login='http://mis.rong360.com/mis/login.html'
+url_login=''
 html1=s.get(url_login)
 loginsoup=BeautifulSoup(html1.text)
 
@@ -26,6 +26,6 @@ login_data = {
 	'LoginForm[verifyCode]':verifycode.strip(),
 	'RONG360_CSRF_TOKEN':TOKEN,
 }
-url='http://mis.rong360.com/mis/login.html'
+url=''
 reponse1=s.post(url,data=login_data)
 print reponse1.content
