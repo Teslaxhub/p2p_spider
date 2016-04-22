@@ -19,7 +19,6 @@ content_url = 'http://www.ppdai.com/account'
 black_list_url = 'http://invest.ppdai.com/account/blacklist'
 black_list_html = ss.get(black_list_url).content
 soup = BeautifulSoup(black_list_html)
-
 def get_page_no():
     '''解析黑名单总页数'''
     page_no = 0
@@ -39,6 +38,7 @@ def get_credit_Rating(user_id):
     # user_desc = creditRatingSoup.find('div', class_='lendDetailTab_tabContent').find('p').text
     user_desc = creditRatingSoup.find('span', attrs={'tt':re.compile('\d*')}).text
     return user_desc, creditRating
+
 if __name__ == '__main__':
     page_no = get_page_no()
     credit_rate_list = []
@@ -58,3 +58,7 @@ if __name__ == '__main__':
     print 'total overDuePerson count: %s' % val_sum
     for rating in rating_counter:
         print rating, float(rating_counter[rating])/val_sum
+    overDueInfo = soup.find('div', attrs={'style':r'margin-bottom: 10px; text-align: right;'}).text.strip()
+    overDueMoney = eval('abs((%s))'%'-'.join([param.replace(',', '') for param in re.findall(r'([\d,.]+)', overDueInfo)[-2:]]))
+    print overDueInfo
+    print '********************************逾期本金:%s'%overDueMoney
