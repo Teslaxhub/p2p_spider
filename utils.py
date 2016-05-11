@@ -103,3 +103,21 @@ def make_inorder_by_freq(filename):
     with codecs.open(filename, encoding='utf-8') as f:
         line_list_inorder = sorted(f.readlines(), key=lambda x:int(x.split('\t')[-1]), reverse=True)
         codecs.open(filename, mode='wb', encoding='utf-8').writelines(line_list_inorder)
+        
+def mail_send(mail_content,mail_user='', mail_password= '', mailto= ''):
+    import time
+    import smtplib
+    from email.mime.text import MIMEText
+    smtp_server = "" #smtp server
+
+    #设置邮件类型
+    msg = MIMEText(mail_content, _subtype='html', _charset='utf-8')#
+    timestamp = time.strftime('%Y_%m_%d %H:%M:%S')
+    msg['Subject'] = 'ppd monitor, ' + timestamp
+    msg['From'] = mail_user
+
+    s = smtplib.SMTP()
+    s.connect(smtp_server)
+    s.login(mail_user, mail_password)
+    s.sendmail(mail_user, mailto, msg.as_string())
+    s.close()
