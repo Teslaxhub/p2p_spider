@@ -103,7 +103,7 @@ def make_inorder_by_freq(filename):
     with codecs.open(filename, encoding='utf-8') as f:
         line_list_inorder = sorted(f.readlines(), key=lambda x:int(x.split('\t')[-1]), reverse=True)
         codecs.open(filename, mode='wb', encoding='utf-8').writelines(line_list_inorder)
-        
+
 def mail_send(mail_content,mail_user='', mail_password= '', mailto= ''):
     import time
     import smtplib
