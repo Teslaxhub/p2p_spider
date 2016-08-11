@@ -11,8 +11,8 @@ sys.setdefaultencoding('utf-8')
 ss = requests.session()
 login_url = 'https://ac.ppdai.com/User/Login'
 post_data = {
-    'Password':'Py03thon',
-    'UserName':'13522884073'
+    'Password':'',
+    'UserName':''
 }
 ss.post(login_url, post_data, verify=False)
 
