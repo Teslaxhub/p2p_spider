@@ -45,7 +45,7 @@ def get_credit_Rating(user_id):
     user_desc = creditRatingSoup.find('span', attrs={'tt':re.compile('\d*')}).text
     return user_desc, creditRating
 
-def mail_send(mail_content,mail_user='wanghuafeng@rong360.com', mail_password= 'Py03thon', mailto= 'zhihuspider@163.com'):
+def mail_send(mail_content,mail_user='', mail_password= '', mailto= 'zhihuspider@163.com'):
     import time
     import smtplib
     from email.mime.text import MIMEText
