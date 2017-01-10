@@ -12,7 +12,7 @@ ss = requests.session()
 login_url = 'https://ac.ppdai.com/User/Login'
 pwd = ''
 post_data = {
-    'UserName':'13522884073',
+    'UserName':'',
     'Password':pwd,
 }
 ss.post(login_url, post_data, verify=False)
