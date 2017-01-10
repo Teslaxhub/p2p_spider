@@ -10,21 +10,16 @@ reload(sys)
 sys.setdefaultencoding('utf-8') 
 ss = requests.session()
 login_url = 'https://ac.ppdai.com/User/Login'
+pwd = ''
 post_data = {
-    'Password':'',
-    'UserName':''
+    'UserName':'13522884073',
+    'Password':pwd,
 }
 ss.post(login_url, post_data, verify=False)
-
 content_url = 'http://www.ppdai.com/account'
 black_list_url = 'http://invest.ppdai.com/account/blacklist'
 black_list_html = ss.get(black_list_url).content
 soup = BeautifulSoup(black_list_html)
-#***************逾期统计*******************
-overDueInfo = soup.find('div', attrs={'style':r'margin-bottom: 10px; text-align: right;'}).text.strip()
-overDueMoney = eval('abs((%s))'%'-'.join([param.replace(',', '') for param in re.findall(r'([\d,.]+)', overDueInfo)[-2:]]))
-print overDueInfo
-print '****************%s****************逾期本金:%s'%(time.strftime('%Y%m%d'), overDueMoney)
 def get_page_no():
     '''解析黑名单总页数'''
     page_no = 0
@@ -34,7 +29,7 @@ def get_page_no():
     except BaseException:
         print '黑名单总页数抓取失败'
     return page_no
-id_list = [item['listingid']  for item in soup.find_all('tr', 'blacklistdetail dn')]
+# id_list = [item['listingid']  for item in soup.find_all('tr', 'blacklistdetail dn')]
 def get_credit_Rating(user_id):
     '''根据用户id，获取评级参数'''
     detail_url = 'http://invest.ppdai.com/loan/info?id=' + user_id
@@ -45,7 +40,7 @@ def get_credit_Rating(user_id):
     user_desc = creditRatingSoup.find('span', attrs={'tt':re.compile('\d*')}).text
     return user_desc, creditRating
 
-def mail_send(mail_content,mail_user='wanghuafeng@rong360.com', mail_password= 'Py03thon', mailto= 'zhihuspider@163.com'):
+def mail_send(mail_content,mail_user='wanghuafeng@rong360.com', mail_password= pwd, mailto= 'zhihuspider@163.com'):
     import time
     import smtplib
     from email.mime.text import MIMEText
@@ -87,12 +82,12 @@ if __name__ == '__main__':
     for rating in rating_counter:
         print rating, float(rating_counter[rating])/val_sum
         mail_content_list.append(u"%s %s" %(rating, float(rating_counter[rating])/val_sum))
-    overDueInfo = soup.find('div', attrs={'style':r'margin-bottom: 10px; text-align: right;'}).text.strip()
+
+    overDueInfo = soup.find('div', class_='account_lend_tooltip').text.strip()
     overDueMoney = eval('abs((%s))'%'-'.join([param.replace(',', '') for param in re.findall(r'([\d,.]+)', overDueInfo)[-2:]]))
     print overDueInfo
     mail_content_list.append(overDueInfo)
     print '****************%s****************逾期本金:%s'%(time.strftime('%Y%m%d'), overDueMoney)
     mail_content_list.append('****************%s****************逾期本金:%s'%(time.strftime('%Y%m%d'), overDueMoney))
-    # print mail_content_list
-    # mail_send('<br>'.join(mail_content_list))
+    mail_send('<br>'.join(mail_content_list))
 
