@@ -14,6 +14,6 @@
 8、mis.py		公司mis系统登录
 9、phpcode_detector.py	php代码检测器
 10、genent_crawl.py	协程，多线程并发压力测试，指定并发线程数，另(cookie设置是dict中value必须为string)
-11、daemon_nat.py, daemon_nat_win.py 内网穿透代理ip方案, 守护进程
+11、daemon_nat.py, daemon_nat_win.py 守护进程
 12.asy_syn_pressure_test.py	多线程并发压力测试， 涉及gevent的返回值判断处理
 </pre>
