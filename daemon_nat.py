@@ -93,7 +93,7 @@ def main():
         create_nat_ssh_tunnel()
 if __name__ == '__main__':
     current = time.strftime('%Y-%m-%d %H:%M:%S')
-    is_proxy_alive = proxy_alive_check()
+    is_proxy_alive = proxy_alive_check() 
     if not is_proxy_alive:
         print '%s proxy dead, restart now...'%current
         main()
