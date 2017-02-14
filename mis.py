@@ -15,14 +15,14 @@ TOKEN=loginsoup.find_all("input")[0]['value']
 checkurl=loginsoup.find_all("img")[1]['src']
 checkurl="http://mis.rong360.com"+checkurl
 path='./yzm.png'
-# pic=urllib.urlretrieve(checkurl,path) #下载验证码到桌面dcde05
+# pic=urllib.urlretrieve(checkurl,path) #下载验证码到桌面
 codecs.open(path, mode='wb').write(s.get(checkurl).content)
 
 verifycode= raw_input("输入验证码:")
 
 login_data = {
-	'LoginForm[mobile]':'1352288',
-	'LoginForm[password]':'dcde0',
+	'LoginForm[mobile]':'',
+	'LoginForm[password]':'',
 	'LoginForm[verifyCode]':verifycode.strip(),
 	'RONG360_CSRF_TOKEN':TOKEN,
 }
