@@ -13,7 +13,7 @@ loginsoup=BeautifulSoup(html1.text)
 
 TOKEN=loginsoup.find_all("input")[0]['value']
 checkurl=loginsoup.find_all("img")[1]['src']
-checkurl="http://mis.rong360.com"+checkurl
+checkurl="http://mis.com"+checkurl
 path='./yzm.png'
 # pic=urllib.urlretrieve(checkurl,path) #下载验证码到桌面
 codecs.open(path, mode='wb').write(s.get(checkurl).content)
