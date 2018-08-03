@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+拍拍贷散标自动投标工具
+"""
 import re
 import json
 import time
