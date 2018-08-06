@@ -1,14 +1,26 @@
 #!-*- coding:utf-8 -*-
 """
 债转标自动投
+拍拍贷债权自动投标需要代收余额达40万才可以
+这里投资规则使用官方默认规则:
+    即:先按折让比例从大到小，再按债转金额从小到大
 """
 import re
+import logging
 import time
 import random
 import requests
 
 TIMEOUT = 5
 sleep_interval = random.randint(60, 60*10)
+
+logging.basicConfig(
+    filename='ppd.log',
+    format='[%(levelname)s %(asctime)s] %(message)s',
+    level=logging.INFO,
+)
+logger = logging.getLogger(__name__)
+
 
 
 ck = ""
@@ -41,8 +53,12 @@ def check_login_status():
         content = resp.content
         if re.search(r'user/logout', content):
             return True
+        else:
+            print "login failed"
+    except requests.Timeout:
+        return True
     except Exception as e:
-        print "check_login_status failed, err_msg=%s" % e
+        logger.error("check_login_status failed, err_msg=%s" % e)
     return False
 
 
@@ -99,19 +115,24 @@ def bid_confirm(query_id):
 
 def one_key_bid():
     debt_list_info = one_key_buy_list()
-    print debt_list_info.get('data')
+    logger.info(debt_list_info.get('data'))
     if debt_list_info.get('Code') != 1:
-        raise Exception("function=one_key_buy_list\terr_msg=%s" % debt_list_info.get("Message"))
+        raise Exception(u"function=one_key_buy_list\terr_msg=%s" % debt_list_info.get("Message"))
+    if debt_list_info.get('data', {}).get('availableBalance') < debt_list_info.get('data', {}).get("sumAmount"):
+        logger.info('余额不足')
+        return
     query_id = debt_list_info.get('data', {}).get('queryId')
     bid_info = bid_confirm(query_id)
     if bid_info.get('Code') != 1:
-        raise Exception("function=one_key_bid\terr_msg=%s" % bid_info.get("Message"))
+        raise Exception(u"function=one_key_bid\terr_msg=%s" % bid_info.get("Message"))
 
 
 if __name__ == "__main__":
-    while check_login_status():
+    while True:
         try:
+            if not check_login_status():
+                break
             one_key_bid()
         except Exception as e:
-            print e
+            logger.error(e)
         time.sleep(sleep_interval)
